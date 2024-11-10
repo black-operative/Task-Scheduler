@@ -1,0 +1,79 @@
+* { font-family: 'Courier New', Courier, monospace; }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 50em;
+}
+
+h1 {
+    text-align: center;
+    font-weight: 1000;
+}
+
+.task-form {
+    display: flex;
+    justify-content: space-between;
+}
+
+#task-input {
+    width: 75%;
+    padding: 8px;
+    font-size: 20px;
+    border-radius: 3px;
+}
+
+#add-task {
+    width: 20%;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: bold;
+    transition: background-color 0.25s;  
+}
+
+#add-task:hover {
+    background-color: green;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+button.delete-task {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.25s;  
+}
+
+button.delete-task:hover {
+    background-color: red;
+}
