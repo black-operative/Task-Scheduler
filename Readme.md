@@ -9,7 +9,7 @@ You can use the following methods to clone this repo to your local machine :
 1. HTTP Clone
 
     ```bash
-    git clone https://github.com/rudrakshm64/Generic-HTTP-Server-In-C.git
+    git clone https://github.com/rudrakshm64/Task-Scheduler.git
     ```
 
 2. GitHub Desktop
@@ -20,14 +20,14 @@ You can use the following methods to clone this repo to your local machine :
         - `Ctrl + Shift + O`
     - URL Tab
     - Repo URL ***or*** Username + Repo name :  
-        - `https://github.com/rudrakshm64/Generic-HTTP-Server-In-C.git`
-        - `rudrakshm64/Generic-HTTP-Server-In-C`
+        - `https://github.com/rudrakshm64/Task-Scheduler.git`
+        - `rudrakshm64/Task-Scheduler`
     - Local Path, pick any location that you want
 
 3. GitHub CLI
 
     ```bash
-    gh repo clone rudrakshm64/Generic-HTTP-Server-In-C
+    gh repo clone rudrakshm64/Task-Scheduler
     ```
 
 ## Features
@@ -50,11 +50,13 @@ The Project is divided into 4 Parts :
 
 - ### Static Website Files
 
-## Class Structure
+## HTTP Server Architecture
+
+### Class Structure
 
 The class which is used to implement the Object Oriented Approach to the project has the following structure :
 
-### Private Properties
+#### Private Properties
 
 ```plaintext
 - server_socket_fd : Socket file descriptor for server
@@ -66,7 +68,7 @@ The class which is used to implement the Object Oriented Approach to the project
 - file_path        : Path to file
 ```
 
-### Public Methods (Brief)
+#### Public Methods (Brief)
 
 This sections briefly shows and explains the available Methods defined in the HTTP_Server class. The entire documentation is available in the [Extended Section](#public-methods-extended)
 
@@ -82,7 +84,7 @@ This sections briefly shows and explains the available Methods defined in the HT
 - close_server()       -> Closes active connections and shuts down the server
 ```
 
-## Custom Datatype
+### Custom Datatype
 
 `HTTP_Response` is a structure containing the 3 required components of an HTTP response. It was created to simplify the process of creating a response object to send over the network.
 
@@ -102,12 +104,12 @@ struct HTTP_Response {
 </code>
 </pre>
 
-## Macro Definitions
+### Macro Definitions
 
 The following macro definitions are used in the project :
 
 ```plaintext
--> BUFFER_SIZE          16384                                  - 16 Kilo Bytes         
+-> BUFFER_SIZE          65536                                  - 64 Kibi Bytes        
 -> CONTENT_HTML         "text/html"                            - HTTP Request : content Type HTML
 -> CONTENT_CSS          "text/css"                             - HTTP Request : content Type CSS  
 -> CONTENT_JS           "application/javascript"               - HTTP Request : content Type JavaScript
@@ -116,7 +118,7 @@ The following macro definitions are used in the project :
 -> HTTP_STATUS_ERR_405  "HTTP/1.1 405 METHOD NOT ALLOWED\r\n"  - HTTP 405 Method Not Allowed Response Header
 ```
 
-## StdLib Functions / Data Structures used
+### StdLib Functions / Data Structures used
 
 ### 1. socket()
 
@@ -296,9 +298,9 @@ int close(int file_descriptor)
 - **file_descriptor :** Target / Process to close
 - Returns status (0 for successful, -1 for failure)
 
-## Public Methods (Extended)
+### Public Methods (Extended)
 
-### 1. HTTP_Server::init_server()
+#### 1. HTTP_Server::init_server()
 
 Initializes the HTTP_Server instance with basic configurations.
 
@@ -311,7 +313,7 @@ int init_server()
 - Initializes [`HTTP_Server::server_addr`](#private-properties) structure.
 - Returns status (0 for successful, -1 for failure)
 
-### 2. HTTP_Server::start_server()
+#### 2. HTTP_Server::start_server()
 
 Starts server for accepting HTTP requests from clients.
 
@@ -323,7 +325,7 @@ int start_server()
 - Enables server wait for connections by invoking [`listen()`](#4-listen).
 - Returns status (0 for successful, -1 for failure)
 
-### 3. HTTP_Server::accept_client()
+#### 3. HTTP_Server::accept_client()
 
 Accepts connections from clients to server for serving requests.
 
@@ -337,7 +339,7 @@ void accept_client()
 - Invokes [`HTTP_Server::handle_client()`](#4-http_serverhandle_client).
 - Does NOT return any status code.
 
-### 4. HTTP_Server::handle_client()
+#### 4. HTTP_Server::handle_client()
 
 Handles client connections and process HTTP requests from clients.
 
@@ -352,7 +354,7 @@ void handle_client()
 - Invokes [`HTTP_Server::send_file_res()`](#3-send_file_res).
 - Does NOT return any status code.
 
-### 5. HTTP_Server::send_response()
+#### 5. HTTP_Server::send_response()
 
 Constructs and sends HTTP responses to client socket. Responses consist of HTTP header, content and body
 
@@ -365,7 +367,7 @@ int send_response()
 - Sends the HTTP Response header and body by invoking [`send()`](#9-send).
 - Returns status (0 for successful, -1 for failure).
 
-### 6. HTTP_Server::send_file_res()
+#### 6. HTTP_Server::send_file_res()
 
 Sends the content of a requested file as an HTTP response with [appropriate headers](#macro-definitions) and formatting.
 
@@ -380,7 +382,7 @@ int send_file_res()
 - Closes file open in `HTTP_Server::file_reader` using [`close()`](#13-stdifstreamclose).
 - Returns status (0 for successful, -1 for failure)
 
-### 7. HTTP_Server::not_found_res()
+#### 7. HTTP_Server::not_found_res()
 
 Constructs and sends an Error 404 Not Found HTTP response to client socket.
 
@@ -392,7 +394,7 @@ int not_found_res()
 - Invokes [`HTTP_Server::send_response()`](#5-http_serversend_response).
 - Returns status (0 for successful, -1 for failure)
 
-### 8. illegal_method_res()
+#### 8. illegal_method_res()
 
 Constructs and sends a Error 405 Method not allowed HTTP response to client socket.
 
@@ -404,7 +406,7 @@ int illegal_method_res()
 - Invokes [`HTTP_Server::send_response()`](#5-http_serversend_response).
 - Returns status (0 for successful, -1 for failure)
 
-### 9. HTTP_Server::close_server()
+#### 9. HTTP_Server::close_server()
 
 Closes all active connections, frees occupied TCP/IP Port and shuts down the server.
 
@@ -413,3 +415,64 @@ Closes all active connections, frees occupied TCP/IP Port and shuts down the ser
 - Clears `HTTP_Server::server_addr` structure.
 - Checks and closes any files open in `HTTP_Server::file_reader`.
 - Does NOT return any status code.
+
+## Task Scheduling Logic
+
+The Web application uses a vanilla HTML/CSS + Javascript architecture, but with a twist. Tho logic itself is written in Typescript and then transpiled down to Javascript. The reason for this is due to the belief of Typescript producing inherently type-safe code.
+
+### Core Data Management Structure
+
+`Task` is datatype which describes a simple task. It contains 2 necessary properties which allow for basic uses and allow for future work.
+
+```ts
+interface Task {
+    Task_Id          : number;
+    Task_Description : string;
+}
+```
+
+`Task` is a TypeScript interface with the following properties :
+
+```plaintext
+- Task_Id          : A unique number to identify each task.
+- Task_Description : A Short description of the task to be completed.
+```
+
+An array of Tasks is created to hold the tasks that need completion.
+
+### Data Management Functions
+
+#### 1. Add_Task()
+
+Adds a task to the Tasks array. Initializes task list render on the web page.
+
+```ts
+function Add_Task() : void
+```
+
+- Creates a new task using input from the input field data set by the user.
+- Stores created task in the Tasks array.
+- Renders the tasks array on the webpage by calling [`Render_Tasks()`](#3-render_tasks).
+
+#### 2. Delete_Task()
+
+Deletes a task from the Tasks array. Reloads the task list render on the web page.
+
+```ts
+function Delete_Task(Target_Task_Id : number) : void
+```
+
+- Finds and deletes the task with the `Task_Id` of `Target_Task_Id`.
+- Renders the tasks array on the webpage by calling [`Render_Tasks()`](#3-render_tasks).
+
+#### 3. Render_Tasks()
+
+Renders the task list array on the web page.
+
+```ts
+function Add_Task() : void
+```
+
+- Creates a new list element for each task.
+- Each created element contains the task description and a delete button.
+- each list element is then added to the webpage's unordered list for tasks.
